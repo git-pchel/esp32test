@@ -1,0 +1,22 @@
+tools:
+  - java: 17
+  - android-sdk: 35
+
+script:
+  - name: Φτιάξε τη δομή φακέλων του Android
+    script: |
+      mkdir -p app/src/main/java/com/example/esp32test
+      mv MainActivity.kt app/src/main/java/com/example/esp32test/
+      mv AndroidManifest.xml app/src/main/
+      mv build.gradle.kts app/
+      
+      echo 'rootProject.name = "esp32test"' > settings.gradle.kts
+      echo 'include(":app")' >> settings.gradle.kts
+      
+      mkdir -p app/src/main/res/values
+      echo '<?xml version="1.0" encoding="utf-8"?><resources><string name="app_name">esp32test</string></resources>' > app/src/main/res/values/strings.xml
+  
+  - name: Παραγωγή του APK
+    script: |
+      cd app
+      ../gradlew assembleDebug || ./gradlew assembleDebug
